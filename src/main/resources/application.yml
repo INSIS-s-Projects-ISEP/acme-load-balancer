@@ -22,13 +22,25 @@ spring:
       routes:
 
         # Review Command Mapper
+        - id: create-review
+          uri: lb://review-command
+          predicates:
+            - Method=POST
+            - Path=/products/{sku}/reviews
+
+        # Review Command Mapper
+        - id: get-all-reviews-of-a-product
+          uri: lb://review-command
+          predicates:
+            - Method=GET
+            - Path=/products/{sku}/reviews/**
+
+        # Review Command Mapper
         - id: review-command
           uri: lb://review-command
           predicates:
             - Method=POST,PUT,PATCH,DELETE
             - Path=/reviews/**
-            - Method=POST
-            - Path=/products/{sku}/reviews
 
         # Review Query Mapper
         - id: review-query
@@ -36,8 +48,6 @@ spring:
           predicates:
             - Method=GET
             - Path=/reviews/**
-            - Method=GET
-            - Path=/products/{sku}/reviews/**
       
         # Product Command Mapper
         - id: product-command
@@ -71,3 +81,10 @@ spring:
 logging:
   level:
     org.springframework.cloud.gateway: TRACE
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

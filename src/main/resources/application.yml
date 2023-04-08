@@ -1,0 +1,73 @@
+
+# Server Port
+server:
+  port: 8080
+
+# Eureka
+eureka:
+  client:
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://acme-discovery-system:8761/eureka
+
+spring:
+
+  # Application
+  application:
+    name: load-balancer
+
+  # Spring Cloud Gateway
+  cloud:
+    gateway:
+      routes:
+
+        # Review Command Mapper
+        - id: review-command
+          uri: lb://review-command
+          predicates:
+            - Method=POST,PUT,PATCH,DELETE
+            - Path=/reviews/**
+            - Method=POST
+            - Path=/products/{sku}/reviews
+
+        # Review Query Mapper
+        - id: review-query
+          uri: lb://review-query
+          predicates:
+            - Method=GET
+            - Path=/reviews/**
+            - Method=GET
+            - Path=/products/{sku}/reviews/**
+      
+        # Product Command Mapper
+        - id: product-command
+          uri: lb://product-command
+          predicates:
+            - Method=POST,PUT,PATCH,DELETE
+            - Path=/products/**
+
+        # Product Query Mapper
+        - id: product-query
+          uri: lb://product-query
+          predicates:
+            - Method=GET
+            - Path=/products/**
+
+        # Vote Command Mapper
+        - id: vote-command
+          uri: lb://vote-command
+          predicates:
+            - Method=POST,PUT,PATCH,DELETE
+            - Path=/votes/**
+
+        # Vote Query Mapper
+        - id: vote-query
+          uri: lb://vote-query
+          predicates:
+            - Method=GET
+            - Path=/votes/**
+
+# Logs
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE

@@ -34,6 +34,13 @@ spring:
           predicates:
             - Method=GET
             - Path=/products/{sku}/reviews/**
+          
+        # Vote Query Find by Review
+        - id: vote-query-find-by-review
+          uri: lb://vote-query
+          predicates:
+            - Method=GET
+            - Path=/reviews/{reviewId}/votes/**
 
         # Review Command Mapper
         - id: review-command

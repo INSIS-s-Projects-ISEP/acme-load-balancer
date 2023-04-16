@@ -21,6 +21,8 @@ spring:
     gateway:
       routes:
 
+        # =========================================================
+        # COMMAND
         # Review Command Mapper
         - id: create-review
           uri: lb://review-command
@@ -28,40 +30,21 @@ spring:
             - Method=POST
             - Path=/products/{sku}/reviews
 
-        # Review Command Mapper
-        - id: get-all-reviews-of-a-product
-          uri: lb://review-command
-          predicates:
-            - Method=GET
-            - Path=/products/{sku}/reviews/**
-          
-        # Vote Query Find by Review
-        - id: vote-query-find-by-review
-          uri: lb://vote-query
-          predicates:
-            - Method=GET
-            - Path=/reviews/{reviewId}/votes/**
-
-        # Review Command Mapper
-        - id: review-command
-          uri: lb://review-command
-          predicates:
-            - Method=POST,PUT,PATCH,DELETE
-            - Path=/reviews/**
-
-        # Review Query Mapper
-        - id: review-query
-          uri: lb://review-query
-          predicates:
-            - Method=GET
-            - Path=/reviews/**
-      
         # Product Command Mapper
         - id: product-command
           uri: lb://product-command
           predicates:
             - Method=POST,PUT,PATCH,DELETE
             - Path=/products/**
+
+        # =========================================================
+        # QUERY
+        # Review Command Mapper
+        - id: get-all-reviews-of-a-product
+          uri: lb://review-query
+          predicates:
+            - Method=GET
+            - Path=/products/{sku}/reviews/**
 
         # Product Query Mapper
         - id: product-query
@@ -70,6 +53,33 @@ spring:
             - Method=GET
             - Path=/products/**
 
+        # =========================================================
+        # COMMAND
+        # Review Command Mapper
+        - id: review-command
+          uri: lb://review-command
+          predicates:
+            - Method=POST,PUT,PATCH,DELETE
+            - Path=/reviews/**
+
+        # =========================================================
+        # QUERY
+        # Vote Query Find by Review
+        - id: vote-query-find-by-review
+          uri: lb://vote-query
+          predicates:
+            - Method=GET
+            - Path=/reviews/{reviewId}/votes/**
+
+        # Review Query Mapper
+        - id: review-query
+          uri: lb://review-query
+          predicates:
+            - Method=GET
+            - Path=/reviews/**
+
+        # =========================================================
+        # COMMAND
         # Vote Command Mapper
         - id: vote-command
           uri: lb://vote-command
@@ -77,6 +87,8 @@ spring:
             - Method=POST,PUT,PATCH,DELETE
             - Path=/votes/**
 
+        # =========================================================
+        # QUERY
         # Vote Query Mapper
         - id: vote-query
           uri: lb://vote-query
